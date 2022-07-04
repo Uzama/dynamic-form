@@ -9,7 +9,7 @@ export enum FieldTypes {
 export interface Data {
   fieldName: string;
   type: string;
-  value: string | number;
+  value: string | number | undefined;
   options?: string[] | number[];
 }
 
