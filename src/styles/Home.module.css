@@ -1,6 +1,6 @@
 .container {
   padding: 0 1rem;
-  overflow-x: inherit;
+  overflow-x: scroll;
 }
 
 .main {
@@ -21,7 +21,7 @@
 
 .form {
   margin-top: 25px;
-  width: 60%;
+  width: 70%;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -30,7 +30,7 @@
 
 .response {
   margin-top: 25px;
-  width: 60%;
+  width: 70%;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -69,6 +69,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 20px;
 }
 
 .button {
@@ -99,6 +100,10 @@
     width: 80%;
   }
 
+  .loadingCircle {
+    width: 80%;
+  }
+
   .field {
     padding-bottom: 15px;
   }
@@ -110,6 +115,6 @@
 
   .response {
     margin-top: 25px;
-    width: 95%;
+    width: 100%;
   }
 }

@@ -5,7 +5,7 @@ import Head from "next/head";
 import { Multiline, Selects, Text } from "../components/Fields";
 import styles from "../styles/Home.module.css";
 import { FieldTypes } from "../types/FetchData";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/Hooks";
 import { select, fetchField, FetchDataStore } from "../app/FetchData";
 import {
   resetStore,
@@ -96,7 +96,7 @@ const Home: NextPage = () => {
         <div className={styles.response}>
           <hr className={styles.line}></hr>
           <h3 className={styles.title}>Response</h3>
-          <pre>{JSON.stringify(sendFStore.response, null, 2)}</pre>
+          <span>{JSON.stringify(sendFStore.response)}</span>
         </div>
       );
     }
