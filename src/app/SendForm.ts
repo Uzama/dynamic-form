@@ -29,6 +29,7 @@ export const sendFormSlice = createSlice({
     sendFormError: (state: SendFormStore, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.response = null;
     },
     sendFormSuccess: (
       state: SendFormStore,
@@ -68,6 +69,11 @@ export function sendFormData(body: {
       );
 
       const data: Response = await response.json();
+
+      if (!data.success) {
+        dispatch(sendFormError(data.message));
+        return;
+      }
 
       dispatch(sendFormSuccess(data));
     } catch (error) {

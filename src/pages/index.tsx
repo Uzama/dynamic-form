@@ -1,4 +1,4 @@
-import { Button, LinearProgress, CircularProgress, Box } from "@mui/material";
+import { Button, LinearProgress, CircularProgress } from "@mui/material";
 import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -101,10 +101,10 @@ const Home: NextPage = () => {
       );
     }
 
-    if (store.error.length != 0) {
+    if (sendFStore.error.length != 0) {
       return (
         <div className={styles.error}>
-          <span> sending data failed::: {store.error}</span>
+          <span> sending data failed::: {sendFStore.error}</span>
         </div>
       );
     }
