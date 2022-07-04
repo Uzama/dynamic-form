@@ -4,7 +4,7 @@
 
 .main {
   min-height: 100vh;
-  padding: 3rem 0;
+  padding: 2rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -13,19 +13,22 @@
 }
 
 .title {
-  margin: 0;
   line-height: 1;
-  font-size: 2rem;
-  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .form {
-  margin-top: 20px;
-  width: 50%;
+  margin-top: 25px;
+  width: 60%;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+}
+
+.field {
+  padding-bottom: 15px;
 }
 
 .loading {
@@ -61,9 +64,9 @@
 
 @media (max-width: 700px) {
   .form {
-    margin-top: 30px;
+    margin-top: 25px;
     width: 95%;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   .loading {
@@ -72,5 +75,15 @@
 
   .field {
     padding-bottom: 15px;
+  }
+
+  .main {
+    min-height: 100vh;
+    padding: 1rem 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
   }
 }
