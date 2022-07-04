@@ -21,12 +21,30 @@
 
 .form {
   margin-top: 20px;
-  padding: 20px;
   width: 50%;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+}
+
+.loading {
+  text-align: center;
+  padding: 30px;
+  width: 30%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .button {
@@ -43,11 +61,16 @@
 
 @media (max-width: 700px) {
   .form {
-    width: 100%;
-    /* padding: 10px; */
-    /* flex: 1; */
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-evenly; */
+    margin-top: 30px;
+    width: 95%;
+    justify-content: space-between;
+  }
+
+  .loading {
+    width: 80%;
+  }
+
+  .field {
+    padding-bottom: 15px;
   }
 }

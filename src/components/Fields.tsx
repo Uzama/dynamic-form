@@ -8,28 +8,35 @@ import {
 } from "@mui/material";
 import React, { Dispatch, SetStateAction, ChangeEvent } from "react";
 import { Data } from "../types/FetchData";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { FetchDataStore } from "../app/FetchData";
+import styles from "../styles/Home.module.css";
+
+import { updateValue } from "../app/FetchData";
 
 interface Props {
   data: Data;
-  state: Data[];
-  setState: Dispatch<SetStateAction<Data[]>>;
+  dispatch: ThunkDispatch<
+    {
+      fetchDataReducer: FetchDataStore;
+    },
+    undefined,
+    AnyAction
+  > &
+    Dispatch<AnyAction>;
 }
 
-export const Text: React.FC<Props> = ({ data, state, setState }) => {
+export const Text: React.FC<Props> = ({ data, dispatch }) => {
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setState(
-      state.map((ele) =>
-        ele.fieldName === data.fieldName
-          ? { ...ele, value: e.target.value }
-          : ele
-      )
-    );
+    data = { ...data, value: e.target.value };
+    dispatch(updateValue(data));
   };
 
   return (
     <TextField
+      className={styles.field}
       value={data.value}
       id={data.fieldName}
       label={data.fieldName}
@@ -40,21 +47,17 @@ export const Text: React.FC<Props> = ({ data, state, setState }) => {
   );
 };
 
-export const Multiline: React.FC<Props> = ({ data, state, setState }) => {
+export const Multiline: React.FC<Props> = ({ data, dispatch }) => {
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setState(
-      state.map((ele) =>
-        ele.fieldName === data.fieldName
-          ? { ...ele, value: e.target.value }
-          : ele
-      )
-    );
+    data = { ...data, value: e.target.value };
+    dispatch(updateValue(data));
   };
 
   return (
     <TextField
+      className={styles.field}
       value={data.value}
       id={data.fieldName}
       label={data.fieldName}
@@ -65,19 +68,14 @@ export const Multiline: React.FC<Props> = ({ data, state, setState }) => {
   );
 };
 
-export const Selects: React.FC<Props> = ({ data, state, setState }) => {
+export const Selects: React.FC<Props> = ({ data, dispatch }) => {
   const handleOnChange = (e: SelectChangeEvent<string | number>) => {
-    setState(
-      state.map((ele) =>
-        ele.fieldName === data.fieldName
-          ? { ...ele, value: e.target.value }
-          : ele
-      )
-    );
+    data = { ...data, value: e.target.value };
+    dispatch(updateValue(data));
   };
 
   return (
-    <FormControl fullWidth>
+    <FormControl className={styles.field} fullWidth>
       <InputLabel id={data.fieldName}>{data.fieldName}</InputLabel>
       <Select
         labelId={data.fieldName}
