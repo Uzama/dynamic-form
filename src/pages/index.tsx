@@ -1,19 +1,28 @@
-import { Button, LinearProgress, Box } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import { Button, LinearProgress, CircularProgress, Box } from "@mui/material";
+import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Multiline, Selects, Text } from "../components/Fields";
 import styles from "../styles/Home.module.css";
 import { FieldTypes } from "../types/FetchData";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { select, fetchField } from "../app/FetchData";
+import { select, fetchField, FetchDataStore } from "../app/FetchData";
+import {
+  resetStore,
+  sendFormStore,
+  sendFormData,
+  SendFormStore,
+} from "../app/SendForm";
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
-  const store = useAppSelector(select);
+  const store: FetchDataStore = useAppSelector(select);
+
+  const sendFStore: SendFormStore = useAppSelector(sendFormStore);
 
   useEffect(() => {
     dispatch(fetchField());
+    dispatch(resetStore());
   }, [dispatch]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,15 +34,15 @@ const Home: NextPage = () => {
       body[data.fieldName] = data.value;
     });
 
-    console.log(body);
+    dispatch(sendFormData(body));
   };
 
   const renderForm = () => {
     if (store.isLoading) {
       return (
         <div className={styles.loading}>
-          <LinearProgress />
-          <span>form is building...</span>
+          <LinearProgress color="success" />
+          <span>building form...</span>
         </div>
       );
     }
@@ -41,7 +50,7 @@ const Home: NextPage = () => {
     if (store.error.length != 0) {
       return (
         <div className={styles.error}>
-          <span> build failed::: {store.error}</span>
+          <span> building form failed::: {store.error}</span>
         </div>
       );
     }
@@ -81,6 +90,28 @@ const Home: NextPage = () => {
     );
   };
 
+  const renderResponse = () => {
+    if (sendFStore.response != null) {
+      return (
+        <div className={styles.response}>
+          <hr className={styles.line}></hr>
+          <h3 className={styles.title}>Response</h3>
+          <pre>{JSON.stringify(sendFStore.response, null, 2)}</pre>
+        </div>
+      );
+    }
+
+    if (store.error.length != 0) {
+      return (
+        <div className={styles.error}>
+          <span> sending data failed::: {store.error}</span>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -88,7 +119,17 @@ const Home: NextPage = () => {
       </Head>
       <main className={styles.main}>
         <h2 className={styles.title}>Dynamic Form</h2>
-        {renderForm()}
+        {sendFStore.isLoading ? (
+          <div className={styles.loadingCircle}>
+            <CircularProgress color="success" />
+            <span>sending data...</span>
+          </div>
+        ) : (
+          <>
+            {renderForm()}
+            {renderResponse()}
+          </>
+        )}
       </main>
     </div>
   );

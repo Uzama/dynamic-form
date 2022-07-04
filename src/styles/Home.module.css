@@ -1,5 +1,6 @@
 .container {
   padding: 0 1rem;
+  overflow-x: inherit;
 }
 
 .main {
@@ -27,6 +28,15 @@
   justify-content: flex-start;
 }
 
+.response {
+  margin-top: 25px;
+  width: 60%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 .field {
   padding-bottom: 15px;
 }
@@ -34,7 +44,18 @@
 .loading {
   text-align: center;
   padding: 30px;
-  width: 30%;
+  width: 35%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.loadingCircle {
+  text-align: center;
+  align-items: center;
+  padding: 30px;
+  width: 35%;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -51,15 +72,20 @@
 }
 
 .button {
-  background-color: indigo;
+  background-color: rgb(1, 105, 1);
 }
 .button:hover {
-  background-color: rgb(103, 1, 177);
+  background-color: rgb(1, 143, 1);
 }
 .button:active {
-  background-color: rgb(103, 1, 177);
+  background-color: rgb(1, 143, 1);
   transform: scale(0.9);
   transition: 0.5s;
+}
+
+.line {
+  width: 100%;
+  border: 1px solid whitesmoke;
 }
 
 @media (max-width: 700px) {
@@ -80,10 +106,10 @@
   .main {
     min-height: 100vh;
     padding: 1rem 0;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+  }
+
+  .response {
+    margin-top: 25px;
+    width: 95%;
   }
 }

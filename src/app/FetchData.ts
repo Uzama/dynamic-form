@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { setTimeout } from "timers/promises";
 import { Data, Response } from "../types/FetchData";
 import { RootState } from "./Store";
 
