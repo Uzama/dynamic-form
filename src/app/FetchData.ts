@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Data } from "../types/FetchData";
+import { setTimeout } from "timers/promises";
+import { Data, Response } from "../types/FetchData";
 import { RootState } from "./Store";
 
 export interface FetchDataStore {
@@ -9,42 +10,9 @@ export interface FetchDataStore {
 }
 
 const initialState: FetchDataStore = {
-  isLoading: false,
+  isLoading: true,
   error: "",
-  data: [
-    {
-      fieldName: "firstName",
-      type: "text",
-      value: "Layla",
-    },
-    {
-      fieldName: "lastName",
-      type: "text",
-      value: "Leannon",
-    },
-    {
-      fieldName: "emailAddress",
-      type: "email",
-      value: "Cora_Daniel80@gmail.com",
-    },
-    {
-      fieldName: "Account",
-      type: "text",
-      value: "revolutionary",
-    },
-    {
-      fieldName: "gender",
-      type: "select",
-      value: "male",
-      options: ["male", "female", "other"],
-    },
-    {
-      fieldName: "testimonial",
-      type: "multiline",
-      value:
-        "Non sed doloribus tenetur non. Aliquam voluptatem velit facilis excepturi quisquam reiciendis sunt. Et provident sapiente omnis repellat repellat itaque ad.",
-    },
-  ],
+  data: [],
 };
 
 export const fetchDataSlice = createSlice({
@@ -58,18 +26,45 @@ export const fetchDataSlice = createSlice({
         }
       });
     },
-    updateLoading: (state: FetchDataStore, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
+    fetchData: (state: FetchDataStore) => {
+      state.isLoading = true;
     },
-    updateError: (state: FetchDataStore, action: PayloadAction<string>) => {
+    fetchDataError: (state: FetchDataStore, action: PayloadAction<string>) => {
+      state.isLoading = false;
       state.error = action.payload;
+    },
+    fetchDataSuccess: (
+      state: FetchDataStore,
+      action: PayloadAction<Data[]>
+    ) => {
+      state.isLoading = false;
+      state.error = "";
+      state.data = action.payload;
     },
   },
 });
 
-export const { updateValue, updateLoading, updateError } =
+export const { updateValue, fetchData, fetchDataError, fetchDataSuccess } =
   fetchDataSlice.actions;
 
 export const select = (state: RootState) => state.fetchDataReducer;
 
 export default fetchDataSlice.reducer;
+
+export function fetchField() {
+  return async (dispatch: any) => {
+    dispatch(fetchData());
+
+    try {
+      const response = await fetch(
+        "https://ulventech-react-exam.netlify.app/api/form"
+      );
+
+      const data: Response = await response.json();
+
+      dispatch(fetchDataSuccess(data.data));
+    } catch (error) {
+      dispatch(fetchDataError("fetching failed"));
+    }
+  };
+}

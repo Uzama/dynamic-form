@@ -1,16 +1,20 @@
 import { Button, LinearProgress, Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Multiline, Selects, Text } from "../components/Fields";
 import styles from "../styles/Home.module.css";
 import { FieldTypes } from "../types/FetchData";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { select } from "../app/FetchData";
+import { select, fetchField } from "../app/FetchData";
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
   const store = useAppSelector(select);
+
+  useEffect(() => {
+    dispatch(fetchField());
+  }, [dispatch]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

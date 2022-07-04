@@ -16,5 +16,5 @@ export interface Data {
 export interface Response {
   success: boolean;
   message: string;
-  data: Data;
+  data: Data[];
 }
