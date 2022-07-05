@@ -1,0 +1,17 @@
+services:
+  app:
+    image: dynamic-form
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    command: ["npm", "start"]
+    environment:
+      - "NODE_ENV=production"
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
