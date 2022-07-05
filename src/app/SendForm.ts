@@ -18,7 +18,7 @@ export const sendFormSlice = createSlice({
   name: "sendForm",
   initialState: initialState,
   reducers: {
-    resetStore: (state: SendFormStore) => {
+    resetFormStore: (state: SendFormStore) => {
       state.response = null;
       state.isLoading = false;
       state.error = "";
@@ -42,13 +42,14 @@ export const sendFormSlice = createSlice({
   },
 });
 
-export const { resetStore, sendForm, sendFormError, sendFormSuccess } =
+export const { resetFormStore, sendForm, sendFormError, sendFormSuccess } =
   sendFormSlice.actions;
 
-export const sendFormStore = (state: RootState) => state.sendFormReducer;
+export const sendFormSelect = (state: RootState) => state.sendFormReducer;
 
 export default sendFormSlice.reducer;
 
+// calling to external api
 export function sendFormData(body: {
   [k: string]: string | number | undefined;
 }) {

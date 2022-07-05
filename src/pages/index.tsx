@@ -4,41 +4,47 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Multiline, Selects, Text } from "../components/Fields";
 import styles from "../styles/Home.module.css";
-import { FieldTypes } from "../types/FetchData";
+import { FieldTypes } from "../types/FetchForm";
 import { useAppDispatch, useAppSelector } from "../app/Hooks";
-import { select, fetchField, FetchDataStore } from "../app/FetchData";
 import {
-  resetStore,
-  sendFormStore,
+  fetchFormSelect,
+  fetchFormData,
+  FetchFormStore,
+} from "../app/FetchForm";
+import {
+  resetFormStore,
+  sendFormSelect,
   sendFormData,
   SendFormStore,
 } from "../app/SendForm";
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
-  const store: FetchDataStore = useAppSelector(select);
 
-  const sendFStore: SendFormStore = useAppSelector(sendFormStore);
+  const fetchFormStore: FetchFormStore = useAppSelector(fetchFormSelect);
+  const sendFormStore: SendFormStore = useAppSelector(sendFormSelect);
 
   useEffect(() => {
-    dispatch(fetchField());
-    dispatch(resetStore());
+    dispatch(fetchFormData());
+    dispatch(resetFormStore());
   }, [dispatch]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // build request body
     let body: { [k: string]: string | number | undefined } = {};
 
-    store.data.forEach((data) => {
-      body[data.fieldName] = data.value;
+    fetchFormStore.fields.forEach((field) => {
+      body[field.fieldName] = field.value;
     });
 
     dispatch(sendFormData(body));
   };
 
+  // render form if isLoading and error is false.
   const renderForm = () => {
-    if (store.isLoading) {
+    if (fetchFormStore.isLoading) {
       return (
         <div className={styles.loading}>
           <LinearProgress color="success" />
@@ -47,37 +53,41 @@ const Home: NextPage = () => {
       );
     }
 
-    if (store.error.length != 0) {
+    if (fetchFormStore.error.length != 0) {
       return (
         <div className={styles.error}>
-          <span> building form failed::: {store.error}</span>
+          <span> building form failed: {fetchFormStore.error}</span>
         </div>
       );
     }
 
     return (
       <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
-        {store.data.map((data) => {
-          switch (data.type) {
+        {fetchFormStore.fields.map((field) => {
+          switch (field.type) {
             case FieldTypes.TEXT:
             case FieldTypes.EMAIL:
             case FieldTypes.NUMBER: {
               return (
-                <Text key={data.fieldName} data={data} dispatch={dispatch} />
+                <Text key={field.fieldName} field={field} dispatch={dispatch} />
               );
             }
             case FieldTypes.MULTILINE: {
               return (
                 <Multiline
-                  key={data.fieldName}
-                  data={data}
+                  key={field.fieldName}
+                  field={field}
                   dispatch={dispatch}
                 />
               );
             }
             case FieldTypes.SELECT: {
               return (
-                <Selects key={data.fieldName} data={data} dispatch={dispatch} />
+                <Selects
+                  key={field.fieldName}
+                  field={field}
+                  dispatch={dispatch}
+                />
               );
             }
           }
@@ -90,21 +100,22 @@ const Home: NextPage = () => {
     );
   };
 
+  // render response if response is not null.
   const renderResponse = () => {
-    if (sendFStore.response != null) {
+    if (sendFormStore.response != null) {
       return (
         <div className={styles.response}>
           <hr className={styles.line}></hr>
           <h3 className={styles.title}>Response</h3>
-          <span>{JSON.stringify(sendFStore.response)}</span>
+          <span>{JSON.stringify(sendFormStore.response)}</span>
         </div>
       );
     }
 
-    if (sendFStore.error.length != 0) {
+    if (sendFormStore.error.length != 0) {
       return (
         <div className={styles.error}>
-          <span> sending data failed::: {sendFStore.error}</span>
+          <span> sending form data failed: {sendFormStore.error}</span>
         </div>
       );
     }
@@ -119,10 +130,10 @@ const Home: NextPage = () => {
       </Head>
       <main className={styles.main}>
         <h2 className={styles.title}>Dynamic Form</h2>
-        {sendFStore.isLoading ? (
+        {sendFormStore.isLoading ? (
           <div className={styles.loadingCircle}>
             <CircularProgress color="success" />
-            <span>sending data...</span>
+            <span>sending form data...</span>
           </div>
         ) : (
           <>

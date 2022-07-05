@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import fetchDataReducer from "./FetchData";
+import fetchFormReducer from "./FetchForm";
 import sendFormReducer from "./SendForm";
 
 export const store = configureStore({
-  reducer: { fetchDataReducer, sendFormReducer },
+  reducer: { fetchFormReducer, sendFormReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

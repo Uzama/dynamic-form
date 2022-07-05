@@ -4,63 +4,51 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  SelectChangeEvent,
 } from "@mui/material";
-import React, { Dispatch, SetStateAction, ChangeEvent } from "react";
-import { Data } from "../types/FetchData";
-import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
-import { FetchDataStore } from "../app/FetchData";
+import React from "react";
+import { Field } from "../types/FetchForm";
 import styles from "../styles/Home.module.css";
 
-import { updateValue } from "../app/FetchData";
+import { updateFieldValue } from "../app/FetchForm";
 
 interface Props {
-  data: Data;
-  dispatch: ThunkDispatch<
-    {
-      fetchDataReducer: FetchDataStore;
-    },
-    undefined,
-    AnyAction
-  > &
-    Dispatch<AnyAction>;
+  field: Field;
+  dispatch: any;
 }
 
-export const Text: React.FC<Props> = ({ data, dispatch }) => {
-  const handleOnChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    data = { ...data, value: e.target.value };
-    dispatch(updateValue(data));
+export const Text: React.FC<Props> = ({ field, dispatch }) => {
+  // update changed value to global store
+  const handleOnChange = (e: any) => {
+    field = { ...field, value: e.target.value };
+    dispatch(updateFieldValue(field));
   };
 
   return (
     <TextField
       className={styles.field}
-      value={data.value}
-      id={data.fieldName}
-      label={data.fieldName}
+      value={field.value}
+      id={field.fieldName}
+      label={field.fieldName}
       variant="outlined"
-      type={data.type}
+      type={field.type}
       onChange={(e) => handleOnChange(e)}
     />
   );
 };
 
-export const Multiline: React.FC<Props> = ({ data, dispatch }) => {
-  const handleOnChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    data = { ...data, value: e.target.value };
-    dispatch(updateValue(data));
+export const Multiline: React.FC<Props> = ({ field, dispatch }) => {
+  // update changed value to global store
+  const handleOnChange = (e: any) => {
+    field = { ...field, value: e.target.value };
+    dispatch(updateFieldValue(field));
   };
 
   return (
     <TextField
       className={styles.field}
-      value={data.value}
-      id={data.fieldName}
-      label={data.fieldName}
+      value={field.value}
+      id={field.fieldName}
+      label={field.fieldName}
       variant="outlined"
       multiline
       onChange={(e) => handleOnChange(e)}
@@ -68,23 +56,24 @@ export const Multiline: React.FC<Props> = ({ data, dispatch }) => {
   );
 };
 
-export const Selects: React.FC<Props> = ({ data, dispatch }) => {
-  const handleOnChange = (e: SelectChangeEvent<string | number>) => {
-    data = { ...data, value: e.target.value };
-    dispatch(updateValue(data));
+export const Selects: React.FC<Props> = ({ field, dispatch }) => {
+  // update changed value to global store
+  const handleOnChange = (e: any) => {
+    field = { ...field, value: e.target.value };
+    dispatch(updateFieldValue(field));
   };
 
   return (
     <FormControl className={styles.field} fullWidth>
-      <InputLabel id={data.fieldName}>{data.fieldName}</InputLabel>
+      <InputLabel id={field.fieldName}>{field.fieldName}</InputLabel>
       <Select
-        labelId={data.fieldName}
-        id={data.fieldName}
-        value={data.value}
-        label={data.fieldName}
+        labelId={field.fieldName}
+        id={field.fieldName}
+        value={field.value}
+        label={field.fieldName}
         onChange={(e) => handleOnChange(e)}
       >
-        {data.options?.map((option) => {
+        {field.options?.map((option) => {
           return (
             <MenuItem key={option} value={option}>
               {option}

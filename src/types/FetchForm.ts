@@ -6,7 +6,7 @@ export enum FieldTypes {
   SELECT = "select",
 }
 
-export interface Data {
+export interface Field {
   fieldName: string;
   type: string;
   value: string | number | undefined;
@@ -16,5 +16,5 @@ export interface Data {
 export interface Response {
   success: boolean;
   message: string;
-  data: Data[];
+  data: Field[];
 }
