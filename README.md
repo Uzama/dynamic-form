@@ -6,15 +6,18 @@
 
 ### How to start
 
-- Make sure you have install docker in your computer
-- Clone the repository
+- Make sure you have installed docker in your computer
+- Clone the repository and move into the project directory
 - Run `docker-compose up`
 - The server will start at `http://localhost:3000`
 
-Note: if you want to change the name of docker image you can edit the image field in `docker-compose.yaml` file. If you want to run application in dev environment, change the following in `docker-compose.yaml` file
+### Note
+
+1. if you want to change the name of the docker image you can edit the image field in `docker-compose.yaml` file.
+2. If you want to run the application in dev environment, change the following in `docker-compose.yaml` file,
 
 ```
     - environment:
       - "NODE_ENV=development"
-    - command: ["yarn", "dev"]
+    - command: ["npm", "dev"]
 ```
